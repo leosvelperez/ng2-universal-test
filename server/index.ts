@@ -22,7 +22,7 @@ import { createEngine } from 'angular2-express-engine';
 import { NodeModule } from './node.module';
 
 // Routes
-// import { routes } from './server.routes';
+import { routes } from './server.routes';
 
 // enable prod for faster renders
 enableProdMode();
@@ -32,13 +32,13 @@ const ROOT = path.join(path.resolve(__dirname, '..'));
 
 // Express View
 app.engine('.html', createEngine({
-  ngModule: NodeModule,
-  providers: [
-    // use only if you have shared state between users
-    // { provide: 'LRU', useFactory: () => new LRU(10) }
+	ngModule: NodeModule,
+	providers: [
+		// use only if you have shared state between users
+		// { provide: 'LRU', useFactory: () => new LRU(10) }
 
-    // stateless providers only since it's shared
-  ]
+		// stateless providers only since it's shared
+	]
 }));
 
 app.set('port', process.env.PORT || 3000);
@@ -52,43 +52,43 @@ app.use(compression());
 app.use(morgan('dev'));
 
 function cacheControl(req: any, res: any, next: any) {
-  // instruct browser to revalidate in 60 seconds
-  res.header('Cache-Control', 'max-age=60');
-  next();
+	// instruct browser to revalidate in 60 seconds
+	res.header('Cache-Control', 'max-age=60');
+	next();
 }
 // Serve static files
-app.use('/assets', cacheControl, express.static(path.join(__dirname, 'assets'), {maxAge: 30}));
-app.use(cacheControl, express.static(path.join(ROOT, 'dist/client'), {index: false}));
+app.use('/assets', cacheControl, express.static(path.join(__dirname, 'assets'), { maxAge: 30 }));
+app.use(cacheControl, express.static(path.join(ROOT, 'dist/client'), { index: false }));
 
 function ngApp(req: any, res: any) {
-  res.render('index', {
-    req,
-    res,
-    // time: true, // use this to determine what part of your app is slow only in development
-    preboot: false,
-    baseUrl: '/',
-    requestUrl: req.originalUrl,
-    originUrl: `http://localhost:${ app.get('port') }`
-  });
+	res.render('index', {
+		req,
+		res,
+		// time: true, // use this to determine what part of your app is slow only in development
+		preboot: false,
+		baseUrl: '/',
+		requestUrl: req.originalUrl,
+		originUrl: `http://localhost:${app.get('port')}`
+	});
 }
 
 /**
  * use universal for specific routes
  */
 app.get('/', ngApp);
-// routes.forEach(route => {
-//   app.get(`/${route}`, ngApp);
-//   app.get(`/${route}/*`, ngApp);
-// });
+routes.forEach(route => {
+	app.get(`/${route}`, ngApp);
+	app.get(`/${route}/*`, ngApp);
+});
 
-app.get('*', function(req, res) {
-  res.setHeader('Content-Type', 'application/json');
-  var pojo = { status: 404, message: 'No Content' };
-  var json = JSON.stringify(pojo, null, 2);
-  res.status(404).send(json);
+app.get('*', function (req, res) {
+	res.setHeader('Content-Type', 'application/json');
+	var pojo = { status: 404, message: 'No Content' };
+	var json = JSON.stringify(pojo, null, 2);
+	res.status(404).send(json);
 });
 
 // Server
 let server = app.listen(app.get('port'), () => {
-  console.log(`Listening on: http://localhost:${server.address().port}`);
+	console.log(`Listening on: http://localhost:${server.address().port}`);
 });

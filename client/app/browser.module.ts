@@ -1,4 +1,5 @@
 import { NgModule } from '@angular/core';
+import { RouterModule } from '@angular/router';
 import { UniversalModule, isBrowser, isNode, AUTO_PREBOOT } from 'angular2-universal/browser'; // for AoT we need to manually split universal packages
 
 import { AppModule, AppComponent } from "./app.module";
@@ -28,6 +29,7 @@ export function getResponse() {
 	imports: [
 		// MaterialModule.forRoot() should be included first
 		UniversalModule, // BrowserModule, HttpModule, and JsonpModule are included,
+		RouterModule.forRoot([], { useHash: false }),
 		AppModule
 	],
 	providers: [

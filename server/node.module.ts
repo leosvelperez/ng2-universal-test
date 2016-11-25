@@ -1,4 +1,5 @@
 import { NgModule } from '@angular/core';
+import { RouterModule } from '@angular/router';
 import { UniversalModule, isBrowser, isNode } from 'angular2-universal/node';
 
 import { AppComponent } from '../client/app/app.component';
@@ -19,7 +20,11 @@ export function getResponse() {
 }
 
 @NgModule({
-	imports: [UniversalModule, AppModule],
+	imports: [
+		UniversalModule,
+    	RouterModule.forRoot([], { useHash: false }),
+		AppModule
+	],
 	bootstrap: [AppComponent],
 	providers: [
 		{ provide: 'isBrowser', useValue: isBrowser },
