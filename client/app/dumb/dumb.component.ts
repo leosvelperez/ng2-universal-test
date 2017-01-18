@@ -1,9 +1,9 @@
 import { Component } from "@angular/core";
 
 @Component({
-	selector: "result",
+	selector: "dumb",
 	template: `
-		Result Component
+		Dumb Component
 	`
 })
-export class ResultComponent { }
+export class DumbComponent { }

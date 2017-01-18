@@ -11,5 +11,5 @@
  **/
 export const routes: string[] = [
 	'home',
-	'result'
+	'dumb'
 ];

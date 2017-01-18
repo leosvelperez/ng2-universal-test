@@ -3,11 +3,11 @@ import { NgModule } from '@angular/core';
 import { AppRoutingModule } from "./app-routing.module";
 import { AppComponent } from './app.component';
 import { HomeComponent } from './home/home.component';
-import { ResultComponent } from './result/result.component';
+import { DumbComponent } from './dumb/dumb.component';
 
 @NgModule({
 	imports: [AppRoutingModule],
-	declarations: [AppComponent, HomeComponent, ResultComponent]
+	declarations: [AppComponent, HomeComponent, DumbComponent]
 })
 export class AppModule { }
 
